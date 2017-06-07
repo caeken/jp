@@ -71,7 +71,7 @@ RUN \
 		perl-dev \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
-	&& git clone https://github.com/openresty/echo-nginx-module.git /usr/src/ \
+	&& git clone https://github.com/openresty/echo-nginx-module.git /usr/src/echo-nginx-module \
 	&& curl -fSL https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/v$NGINX_SUBSTITUTIONS_FILTER_VERSION.tar.gz -o nginx_substitutions_filter.tar.gz \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
