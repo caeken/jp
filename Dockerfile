@@ -2,7 +2,6 @@ FROM alpine:3.3
 MAINTAINER Cecile Tonglet <cecile.tonglet@gmail.com>
 
 ENV NGINX_VERSION 1.10.1
-ENV NGINX_ECHO_VERSION 0.60
 ENV NGINX_SUBSTITUTIONS_FILTER_VERSION 0.6.4
 
 ENV GPG_KEYS B0F4253373F8F6F510D42178520A9993A1C052F8
@@ -49,13 +48,14 @@ ENV CONFIG "\
 	--with-http_v2_module \
 	--with-ipv6 \
 	--add-module=/usr/src/ngx_http_substitutions_filter_module-$NGINX_SUBSTITUTIONS_FILTER_VERSION \
-	--add-module=/usr/src/echo-nginx-module-$NGINX_ECHO_VERSION \
+	--add-module=/usr/src/echo-nginx-module \
 	"
 
 RUN \
 	addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
 	&& apk add --no-cache --virtual .build-deps \
+		git \
 		gcc \
 		libc-dev \
 		make \
@@ -71,7 +71,7 @@ RUN \
 		perl-dev \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
-	&& curl -fSL https://codeload.github.com/openresty/echo-nginx-module/zip/v$NGINX_ECHO_VERSION -o nginx_echo.zip \
+	&& git clone https://github.com/openresty/echo-nginx-module.git \
 	&& curl -fSL https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/v$NGINX_SUBSTITUTIONS_FILTER_VERSION.tar.gz -o nginx_substitutions_filter.tar.gz \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
@@ -79,10 +79,8 @@ RUN \
 	&& rm -r "$GNUPGHOME" nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
 	&& tar -zxC /usr/src -f nginx.tar.gz \
-	&& unzip -j nginx_echo.zip /usr/src \
 	&& tar -zxC /usr/src -f nginx_substitutions_filter.tar.gz \
 	&& rm nginx.tar.gz \
-	&& rm nginx_echo.zip \
 	&& rm nginx_substitutions_filter.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
