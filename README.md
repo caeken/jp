@@ -1,2 +1,0 @@
-# jp
-nginx-filter-echo
