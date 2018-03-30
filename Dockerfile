@@ -125,4 +125,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80 443
 
-CMD ["sh","-c","wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL && nginx -g 'daemon off'"]
+CMD ["sh","-c","wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL && nginx -g 'daemon off;'"]
