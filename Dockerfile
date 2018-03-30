@@ -122,6 +122,7 @@ RUN \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log 
 
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY naproxy.conf /etc/nginx/naproxy.conf
 
 EXPOSE 80 443
 
