@@ -3,7 +3,7 @@ MAINTAINER Cecile Tonglet <cecile.tonglet@gmail.com>
 
 ENV NGINX_VERSION 1.10.1
 ENV NGINX_SUBSTITUTIONS_FILTER_VERSION 0.6.4
-ENV NGINX_CONFIGURL http://localhost/default.conf 
+ENV NGINX_CONFIGURL http://localhost/default.zip
 
 
 ENV GPG_KEYS B0F4253373F8F6F510D42178520A9993A1C052F8
@@ -126,4 +126,4 @@ COPY naproxy.conf /etc/nginx/naproxy.conf
 
 EXPOSE 80 443
 
-CMD ["sh","-c","wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL && nginx -g 'daemon off;'"]
+CMD ["sh","-c","cd /etc/nginx/conf.d/ && wget -O default.zip $NGINX_CONFIGURL && unzip default.zip && nginx -g 'daemon off;'"]
