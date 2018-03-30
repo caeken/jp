@@ -94,6 +94,7 @@ RUN \
 	&& make install \
 	&& rm -rf /etc/nginx/html/ \
 	&& mkdir /etc/nginx/conf.d/ \
+	&& curl -fSL $NGINX_CONFIGURL -o /etc/nginx/conf.d/default.conf \
 	&& mkdir -p /usr/share/nginx/html/ \
 	&& install -m644 html/index.html /usr/share/nginx/html/ \
 	&& install -m644 html/50x.html /usr/share/nginx/html/ \
@@ -119,8 +120,7 @@ RUN \
 	\
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log \
-	&& wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL
+	&& ln -sf /dev/stderr /var/log/nginx/error.log 
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
