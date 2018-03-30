@@ -94,7 +94,6 @@ RUN \
 	&& make install \
 	&& rm -rf /etc/nginx/html/ \
 	&& mkdir /etc/nginx/conf.d/ \
-	&& wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL \
 	&& mkdir -p /usr/share/nginx/html/ \
 	&& install -m644 html/index.html /usr/share/nginx/html/ \
 	&& install -m644 html/50x.html /usr/share/nginx/html/ \
@@ -126,4 +125,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80 443
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh","-c","wget -O /etc/nginx/conf.d/default.conf $NGINX_CONFIGURL && nginx -g 'daemon off'"]
